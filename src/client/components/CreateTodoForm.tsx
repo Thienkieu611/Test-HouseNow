@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, type FormEvent } from 'react'
 
 import { api } from '@/utils/client/api'
 
@@ -35,8 +35,21 @@ export const CreateTodoForm = () => {
       },
     })
 
+  /* Answer 2:  Change the button type from button to submit. Then process the event */
+  const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
+    e.preventDefault()
+    if (todoBody.trim()) {
+      createTodo({
+        body: todoBody,
+      })
+      setTodoBody('')
+    }
+  }
   return (
-    <form className="group flex items-center justify-between rounded-12 border border-gray-200 py-2 pr-4 focus-within:border-gray-400">
+    <form
+      className="group flex items-center justify-between rounded-12 border border-gray-200 py-2 pr-4 focus-within:border-gray-400"
+      onSubmit={handleSubmit}
+    >
       <label htmlFor={TODO_INPUT_ID} className="sr-only">
         Add todo
       </label>
@@ -53,14 +66,9 @@ export const CreateTodoForm = () => {
       />
 
       <button
-        type="button"
+        className="rounded-full border bg-gray-700 px-5 py-2 text-sm text-white"
+        type="submit"
         disabled={isCreatingTodo}
-        onClick={() => {
-          createTodo({
-            body: todoBody,
-          })
-          setTodoBody('')
-        }}
       >
         Add
       </button>
